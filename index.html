@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal Asesmen SMPN 2 Gandusari — Exambro &amp; GAS (v2.12)</title>
+  <title>Portal Asesmen SMPN 2 Gandusari — Exambro &amp; GAS (v2.14)</title>
 
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -312,7 +312,7 @@
             </div>
             <div id="sidebar-brand-text" class="min-w-0">
               <h1 class="text-sm font-extrabold text-slate-800 truncate leading-tight">SMPN 2 Gandusari</h1>
-              <p class="text-[11px] font-semibold text-teal-600 truncate">Portal Asesmen v2.12</p>
+              <p class="text-[11px] font-semibold text-teal-600 truncate">Portal Asesmen v2.14</p>
             </div>
           </div>
           <!-- Tombol Collapse Desktop -->
@@ -402,7 +402,7 @@
           </button>
         </div>
         <div class="sidebar-text text-center mt-2 space-y-0.5">
-          <p class="text-[10px] font-bold text-slate-500">Portal Asesmen v2.12</p>
+          <p class="text-[10px] font-bold text-slate-500">Portal Asesmen v2.14</p>
           <p class="text-[10px] text-slate-400">Dikembangkan oleh SMPN 2 Gandusari</p>
         </div>
       </div>
@@ -1032,7 +1032,7 @@
             <div class="rounded-2xl border border-slate-200 overflow-hidden">
               <div class="bg-slate-900 text-slate-200 px-4 py-3 flex items-center justify-between gap-3">
                 <span class="text-xs font-mono font-bold flex items-center gap-2">
-                  <i class="fa-brands fa-google text-teal-400"></i> Code.gs v2.9 (Session Token + Anti Brute-Force + Log Aktivitas + Log Pelanggaran + Token Ujian)
+                  <i class="fa-brands fa-google text-teal-400"></i> Code.gs v2.11 (Session Token + Anti Brute-Force + Log Aktivitas + Log Pelanggaran + Token Ujian)
                 </span>
                 <button onclick="copyGasCode()" class="px-3 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold flex items-center gap-1.5 transition-colors">
                   <i class="fa-solid fa-copy"></i> Salin Code.gs
@@ -1047,7 +1047,7 @@
 
       <!-- Footer Aplikasi -->
       <footer class="no-print border-t border-slate-200 bg-white/80 px-4 sm:px-6 py-3.5 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-7xl w-full mx-auto">
-        <span class="font-semibold">Portal Asesmen Sekolah <span class="text-teal-600 font-extrabold">v2.12</span> • Mode Exambro &amp; GAS</span>
+        <span class="font-semibold">Portal Asesmen Sekolah <span class="text-teal-600 font-extrabold">v2.14</span> • Mode Exambro &amp; GAS</span>
         <span>Dikembangkan oleh <b class="text-slate-700">SMPN 2 Gandusari</b></span>
       </footer>
     </div>
@@ -1099,6 +1099,7 @@
             <li>Dilarang pindah tab, membuka aplikasi lain, atau keluar dari Fullscreen.</li>
             <li><b>Pelanggaran 1 &amp; 2:</b> Layar terkunci merah &amp; alarm sirene berbunyi sampai menekan <i>"Kembali ke Ujian"</i>.</li>
             <li><b>Pelanggaran 3:</b> Ujian <b>terkunci permanen</b> &amp; wajib keluar (Force Close).</li>
+            <li><b>Pengguna HP:</b> Aktifkan mode <b>Jangan Ganggu (Do Not Disturb)</b> agar notifikasi WhatsApp/telepon tidak memicu pelanggaran.</li>
             <li>Setiap pelanggaran <b>tercatat atas nama Anda</b> dan dapat dilihat guru. Siswa yang terkunci hanya bisa dibuka oleh guru/pengawas.</li>
           </ul>
         </div>
@@ -1211,10 +1212,15 @@
             <i class="fa-solid fa-hourglass-end text-4xl text-amber-400"></i>
           </div>
           <h3 class="text-2xl font-extrabold">Waktu Ujian Telah Habis</h3>
-          <p class="text-sm text-slate-300">Durasi pengerjaan telah selesai. Pastikan Anda sudah menekan tombol <b>Kirim / Submit</b> pada formulir, lalu keluar dari Mode Exambro.</p>
-          <button onclick="forceCloseExambro()" class="w-full py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-sm shadow-lg flex items-center justify-center gap-2">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar Mode Exambro
-          </button>
+          <p id="exambro-timeup-desc" class="text-sm text-slate-300">Durasi pengerjaan telah selesai. Jika belum sempat menekan tombol <b>Kirim / Submit</b> di Google Form, gunakan tombol perpanjangan 60 detik di bawah (hanya 1 kali).</p>
+          <div class="space-y-2.5">
+            <button id="btn-timeup-grace" onclick="grantSubmitGracePeriod()" class="w-full py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm shadow-lg flex items-center justify-center gap-2 transition-colors">
+              <i class="fa-solid fa-paper-plane"></i> Kembali 60 Detik untuk Klik Kirim
+            </button>
+            <button onclick="forceCloseExambro(true)" class="w-full py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-sm shadow-lg flex items-center justify-center gap-2 transition-colors">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Sudah Kirim — Keluar Mode Exambro
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1418,12 +1424,12 @@
        0. KONFIGURASI DEPLOYMENT ONLINE (EDIT 2 BARIS INI SAAT UPLOAD KE GITHUB)
        ========================================================================= */
     const APP_CONFIG = {
-      APP_VERSION: 'v2.12',
-      GAS_VERSION: 'v2.9', // versi Code.gs yang dibutuhkan portal
+      APP_VERSION: 'v2.14',
+      GAS_VERSION: 'v2.11', // versi Code.gs yang dibutuhkan portal
       DEVELOPER_NAME: 'SMPN 2 Gandusari',
 
       // 1) Tempel URL Web App Google Apps Script (/exec) Anda di antara tanda kutip:
-      DEFAULT_GAS_URL: 'https://script.google.com/macros/s/AKfycbwqCbr3A5yG3WVM_Xv7xYGEQUo4R56WAlKzItGyGBD5kwkK1U-0RrBkVq9yNrHGIaSqUQ/exec',
+      DEFAULT_GAS_URL: 'https://script.google.com/macros/s/AKfycbyo381JWpbTfoiAj9D2ssYSQiaIn3Y4949ifQufGlEOd1-AzBrPBPayctTm_Z6J46L7/exec',
 
       // 2) Ubah menjadi true saat siap online di GitHub Pages / Google Sites!
       //    (Otomatis kunci Mode Live, sembunyikan semua tombol demo & simulasi)
@@ -1447,6 +1453,7 @@
       VIOLATIONS: 'pas_demo_violations_v23',
       PENDING_VIOLATIONS: 'pas_pending_violations_v23',
       SESSIONS: 'pas_demo_sessions_v23',
+      EXAM_TIMERS: 'pas_exam_timers_v23',
       SESSION: 'pas_user_session_v23',
       SIDEBAR_COLLAPSED: 'pas_sidebar_collapsed_v23',
       THEME: 'pas_theme_v23'
@@ -1577,6 +1584,10 @@
       lockedOut: false,
       warningOpen: false,
       remainingSeconds: 0,
+      timerKey: '',
+      graceUsed: false,
+      warned5Min: false,
+      warned1Min: false,
       lastViolationAt: 0,
       timerInterval: null,
       audioCtx: null,
@@ -1793,7 +1804,9 @@
         throw new Error('URL GAS harus berakhiran "/exec" (bukan "/dev"). Silakan deploy sebagai Aplikasi Web.');
       }
 
-      const response = await fetch(appState.gasUrl, {
+      let response;
+      try {
+      response = await fetch(appState.gasUrl, {
         method: 'POST',
         redirect: 'follow',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1806,15 +1819,26 @@
           } : null
         })
       });
+      } catch (netErr) {
+        // Jaringan putus / server tidak menjawab: gangguan sementara, boleh dicoba ulang
+        const e = new Error('Gagal terhubung ke server (' + netErr.message + ')');
+        e.transient = true;
+        throw e;
+      }
       if (!response.ok) {
-        throw new Error(`HTTP Error ${response.status}`);
+        const e = new Error(`HTTP Error ${response.status}`);
+        e.transient = response.status === 429 || response.status === 408 || response.status >= 500;
+        throw e;
       }
       const rawText = await response.text();
       let data;
       try {
         data = JSON.parse(rawText);
       } catch (parseErr) {
-        throw new Error('Server GAS mengembalikan HTML (bukan JSON). Pastikan Deployment Web App diatur "Yang memiliki akses: Siapa saja (Anyone)".');
+        // Halaman galat Google (mis. kuota eksekusi bersamaan penuh) atau pengaturan akses salah
+        const htmlErr = new Error('Server GAS mengembalikan HTML (bukan JSON). Pastikan Deployment Web App diatur "Yang memiliki akses: Siapa saja (Anyone)".');
+        htmlErr.transient = true;
+        throw htmlErr;
       }
       if (!data.success) {
         if (data.code === 'UNAUTHORIZED' && appState.currentUser) {
@@ -1823,6 +1847,31 @@
         throw new Error(data.message || 'Permintaan ditolak oleh server GAS.');
       }
       return data;
+    }
+
+    /* Panggilan dengan percobaan ulang otomatis untuk gangguan SEMENTARA (server sibuk, jaringan putus-sambung).
+       Jawaban tegas dari server (token salah, ujian nonaktif, terkunci, dll.) TIDAK diulang. Jeda diacak agar
+       ratusan siswa tidak mencoba ulang pada detik yang sama. */
+    async function callGasApiRetry(action, payload = {}, opts = {}) {
+      const attempts = opts.attempts || 3;
+      const timeoutMs = opts.timeoutMs || 10000;
+      for (let attempt = 1; ; attempt++) {
+        try {
+          return await Promise.race([
+            callGasApi(action, payload),
+            new Promise((_, reject) => setTimeout(() => {
+              const e = new Error('Waktu tunggu server habis.');
+              e.transient = true;
+              reject(e);
+            }, timeoutMs))
+          ]);
+        } catch (err) {
+          if (!err.transient || attempt >= attempts) throw err;
+          if (opts.onRetry) opts.onRetry(attempt + 1, attempts);
+          const delay = 600 * Math.pow(2, attempt - 1) * (0.5 + Math.random());
+          await new Promise(res => setTimeout(res, delay));
+        }
+      }
     }
 
     async function syncAllData(showNotif = false) {
@@ -1836,8 +1885,8 @@
       try {
         if (appState.mode === 'live' && appState.gasUrl) {
           const [examRes, classRes] = await Promise.all([
-            callGasApi('getExams'),
-            callGasApi('getClasses').catch(() => ({ data: null }))
+            callGasApiRetry('getExams'),
+            callGasApiRetry('getClasses').catch(() => ({ data: null }))
           ]);
           appState.exams = examRes.data || [];
           if (classRes && Array.isArray(classRes.data) && classRes.data.length > 0) {
@@ -2276,7 +2325,13 @@
       }
       exambroState.lockedOut = false;
       exambroState.warningOpen = false;
-      exambroState.remainingSeconds = (Number(exam.Durasi) || 60) * 60;
+      const fullDurationSec = (Number(exam.Durasi) || 60) * 60;
+      const timerKey = makeStudentKey(nama, exam.ID_Ujian);
+      exambroState.timerKey = timerKey;
+      exambroState.remainingSeconds = resolveExamRemainingSeconds(timerKey, fullDurationSec);
+      exambroState.graceUsed = false;
+      exambroState.warned5Min = exambroState.remainingSeconds <= 300;
+      exambroState.warned1Min = exambroState.remainingSeconds <= 60;
       exambroState.lastViolationAt = Date.now() + 1800;
 
       document.getElementById('exambro-bar-title').textContent = `${examTitle(exam)} — ${exam.Kelas} (${exam.Kategori})`;
@@ -2337,6 +2392,48 @@
       } catch (e) {}
     }
 
+    function resolveExamRemainingSeconds(timerKey, fullDurationSec) {
+      const now = Date.now();
+      const map = safeGetStorage(STORAGE_KEYS.EXAM_TIMERS, {});
+      // Bersihkan timer lama (> 24 jam) agar localStorage tetap rapi
+      Object.keys(map).forEach(k => {
+        if (!map[k] || (now - (map[k].savedAt || 0)) > 86400000) delete map[k];
+      });
+      const existing = map[timerKey];
+      let remaining = fullDurationSec;
+      if (existing && existing.deadline && existing.deadline > now) {
+        remaining = Math.min(fullDurationSec, Math.max(1, Math.ceil((existing.deadline - now) / 1000)));
+      } else {
+        map[timerKey] = { deadline: now + fullDurationSec * 1000, savedAt: now };
+      }
+      safeSetStorage(STORAGE_KEYS.EXAM_TIMERS, map);
+      return remaining;
+    }
+
+    function clearExamTimerStorage(timerKey) {
+      if (!timerKey) return;
+      const map = safeGetStorage(STORAGE_KEYS.EXAM_TIMERS, {});
+      if (map[timerKey]) {
+        delete map[timerKey];
+        safeSetStorage(STORAGE_KEYS.EXAM_TIMERS, map);
+      }
+    }
+
+    function grantSubmitGracePeriod() {
+      if (!exambroState.active || exambroState.graceUsed) return;
+      exambroState.graceUsed = true;
+      exambroState.remainingSeconds = 60;
+      exambroState.warned5Min = true;
+      exambroState.warned1Min = true;
+      const timeupEl = document.getElementById('exambro-timeup');
+      if (timeupEl) {
+        timeupEl.classList.add('hidden');
+        timeupEl.classList.remove('flex');
+      }
+      showToast('Perpanjangan 60 detik aktif. Segera tekan tombol Kirim / Submit pada Google Form!', 'warning');
+      startExambroTimer();
+    }
+
     function startExambroTimer() {
       clearInterval(exambroState.timerInterval);
       renderExambroTimer();
@@ -2344,9 +2441,25 @@
         if (!exambroState.active) return;
         exambroState.remainingSeconds = Math.max(0, exambroState.remainingSeconds - 1);
         renderExambroTimer();
+        if (exambroState.remainingSeconds <= 300 && !exambroState.warned5Min) {
+          exambroState.warned5Min = true;
+          showToast('Sisa waktu 5 menit! Segera periksa dan siapkan untuk menekan Kirim / Submit.', 'warning');
+        }
+        if (exambroState.remainingSeconds <= 60 && !exambroState.warned1Min) {
+          exambroState.warned1Min = true;
+          showToast('Sisa waktu 1 menit terakhir! Segera tekan tombol Kirim / Submit sekarang.', 'error');
+        }
         if (exambroState.remainingSeconds <= 0) {
           clearInterval(exambroState.timerInterval);
           stopSirenAlarm();
+          const btnGrace = document.getElementById('btn-timeup-grace');
+          const desc = document.getElementById('exambro-timeup-desc');
+          if (btnGrace) btnGrace.classList.toggle('hidden', exambroState.graceUsed);
+          if (desc) {
+            desc.innerHTML = exambroState.graceUsed
+              ? 'Waktu perpanjangan telah selesai. Silakan keluar dari Mode Exambro.'
+              : 'Durasi pengerjaan telah selesai. Jika belum sempat menekan tombol <b>Kirim / Submit</b> di Google Form, gunakan tombol perpanjangan 60 detik di bawah (hanya 1 kali).';
+          }
           const timeupEl = document.getElementById('exambro-timeup');
           timeupEl.classList.remove('hidden');
           timeupEl.classList.add('flex');
@@ -2497,13 +2610,18 @@
         title: 'Selesai & Keluar Ujian?',
         message: 'Pastikan Anda sudah menekan tombol Kirim / Submit di Google Form sebelum keluar dari Mode Exambro.',
         confirmText: 'Ya, Selesai',
-        onConfirm: () => forceCloseExambro()
+        onConfirm: () => forceCloseExambro(true)
       });
     }
 
-    function forceCloseExambro() {
+    function forceCloseExambro(clearTimer = false) {
+      if (clearTimer && exambroState.timerKey) {
+        clearExamTimerStorage(exambroState.timerKey);
+      }
       exambroState.active = false;
       exambroState.studentName = '';
+      exambroState.timerKey = '';
+      exambroState.graceUsed = false;
       moveUiIntoExambro(false);
       exambroState.formLink = '';
       exambroState.token = '';
@@ -2652,6 +2770,15 @@
       return Math.random().toString(36).slice(2, 8).toUpperCase();
     }
 
+    function generateUniqueExamId() {
+      const used = new Set(appState.exams.map(e => String(e.ID_Ujian || '').toUpperCase()));
+      for (let i = 0; i < 100; i++) {
+        const id = 'UJN-' + Math.floor(1000 + Math.random() * 9000);
+        if (!used.has(id)) return id;
+      }
+      return 'UJN-' + String(Date.now()).slice(-6);
+    }
+
     function getUsedExamTokens(exceptExamId = null) {
       return new Set(appState.exams
         .filter(e => e.ID_Ujian !== exceptExamId)
@@ -2721,18 +2848,22 @@
       if (appState.mode === 'live' && appState.gasUrl) {
         try {
           await flushPendingViolations();
-          const res = await Promise.race([
-            callGasApi('verifyExamToken', { examId: exam.ID_Ujian, nama, token }),
-            new Promise((_, reject) => setTimeout(() => reject(new Error('Waktu tunggu server habis.')), 12000))
-          ]);
+          const res = await callGasApiRetry('verifyExamToken', { examId: exam.ID_Ujian, nama, token }, {
+            attempts: 3,
+            timeoutMs: 12000,
+            onRetry: (n, total) => {
+              const bar = document.getElementById('exambro-bar-title');
+              if (bar) bar.textContent = `Server sedang sibuk, mencoba lagi (${n}/${total})...`;
+            }
+          });
           return { ok: true, strikes: Number(res.strikes) || 0, locked: Boolean(res.locked), linkForm: res.linkForm, source: 'server' };
         } catch (err) {
           const msg = String(err && err.message || '');
-          const offline = /fetch|network|Waktu tunggu|HTTP Error|HTML/i.test(msg);
+          const offline = Boolean(err && err.transient) || /fetch|network|Waktu tunggu|HTTP Error|HTML/i.test(msg);
           return {
             ok: false,
             message: offline
-              ? 'Token belum dapat diverifikasi karena server tidak terjangkau. Periksa koneksi internet lalu coba lagi.'
+              ? 'Token belum dapat diverifikasi karena server sibuk atau tidak terjangkau. Periksa koneksi internet, tunggu beberapa detik, lalu tekan Mulai Sekarang lagi.'
               : msg
           };
         }
@@ -3446,7 +3577,7 @@
       }
 
       const payload = {
-        ID_Ujian: idExisting || 'UJN-' + Math.floor(100 + Math.random() * 899),
+        ID_Ujian: idExisting || generateUniqueExamId(),
         Kategori: document.getElementById('form-exam-kategori').value,
         Mapel: selectedMapel,
         Kelas: document.getElementById('form-exam-kelas').value,
@@ -4178,7 +4309,12 @@
       return /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(v) ? Date.parse(v.replace(' ', 'T') + '+07:00') : NaN;
     }
 
-    /* Samakan nama di portal & Google Form: huruf kecil, tanpa tanda baca dan tanpa nomor absen "(12)" */
+    /* Normalisasi nama ketat (menjaga nomor absen mis. "(12)" agar siswa bernama kembar tidak tertukar) */
+    function normalizePersonNameStrict(n) {
+      return String(n || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    /* Normalisasi nama longgar (tanpa nomor absen, dipakai sebagai cadangan jika nama tidak kembar) */
     function normalizePersonName(n) {
       return String(n || '').toLowerCase().replace(/\(\s*\d+\s*\)/g, ' ').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
     }
@@ -4192,27 +4328,44 @@
     }
 
     /* Tambahkan mulai & durasiDetik ke tiap baris nilai.
-       Dipilih waktu mulai TERAWAL siswa itu yang masih dalam batas (durasi ujian + toleransi 15 menit) sebelum waktu kirim. */
+       Prioritas 1: cocok persis termasuk nomor absen; Prioritas 2: tanpa nomor absen (bila nama unik). */
     function attachDurations(grades, sessions, exam) {
       const windowMs = ((Number(exam && exam.Durasi) || 60) + 15) * 60 * 1000;
-      const byName = new Map();
+      const byStrict = new Map();
+      const byLoose = new Map();
+      const looseDistinct = new Map();
       (sessions || []).forEach(s => {
         const ts = parseWibTimestamp(s.waktu);
         if (!Number.isFinite(ts)) return;
-        const k = normalizePersonName(s.nama);
-        if (!byName.has(k)) byName.set(k, []);
-        byName.get(k).push({ ts, waktu: s.waktu });
+        const ks = normalizePersonNameStrict(s.nama);
+        const kl = normalizePersonName(s.nama);
+        if (!byStrict.has(ks)) byStrict.set(ks, []);
+        byStrict.get(ks).push({ ts, waktu: s.waktu });
+        if (!byLoose.has(kl)) byLoose.set(kl, []);
+        byLoose.get(kl).push({ ts, waktu: s.waktu });
+        if (!looseDistinct.has(kl)) looseDistinct.set(kl, new Set());
+        looseDistinct.get(kl).add(ks);
       });
-      byName.forEach(list => list.sort((a, b) => a.ts - b.ts));
+      byStrict.forEach(list => list.sort((a, b) => a.ts - b.ts));
+      byLoose.forEach(list => list.sort((a, b) => a.ts - b.ts));
       return (grades || []).map(g => {
         const end = parseWibTimestamp(g.timestamp);
-        const list = byName.get(normalizePersonName(g.nama)) || [];
-        const start = Number.isFinite(end) ? list.find(s => s.ts <= end && (end - s.ts) <= windowMs) : null;
+        if (!Number.isFinite(end)) return { ...g, mulai: null, durasiDetik: null };
+        const ks = normalizePersonNameStrict(g.nama);
+        const kl = normalizePersonName(g.nama);
+        const strictList = byStrict.get(ks) || [];
+        let start = strictList.find(s => s.ts <= end && (end - s.ts) <= windowMs) || null;
+        if (!start && looseDistinct.has(kl) && looseDistinct.get(kl).size === 1) {
+          const looseList = byLoose.get(kl) || [];
+          start = looseList.find(s => s.ts <= end && (end - s.ts) <= windowMs) || null;
+        }
         return { ...g, mulai: start ? start.waktu : null, durasiDetik: start ? Math.round((end - start.ts) / 1000) : null };
       });
     }
 
     const APP_CHANGELOG = [
+      { v: 'v2.14', judul: 'Penyempurnaan pra-ujian', isi: 'Timer Exambro tetap berjalan meski halaman di-refresh, peringatan 5 & 1 menit terakhir + tombol darurat 60 detik saat waktu habis untuk klik Kirim, perbaikan durasi nama kembar dengan nomor absen, ID ujian 4 digit anti-duplikat, serta pengingat mode Jangan Ganggu di HP.', gas: true },
+      { v: 'v2.13', judul: 'Kapasitas untuk banyak siswa', isi: 'Server: daftar ujian & kelas di-cache 60 detik (otomatis dihapus saat data diubah lewat portal), pemeriksaan kolom sheet tidak diulang tiap permintaan. Klien: percobaan ulang otomatis dengan jeda acak bila server sibuk atau jaringan putus-sambung.', gas: true },
       { v: 'v2.12', judul: 'Waktu pengerjaan di Rekap Nilai', isi: 'Kolom Waktu Pengerjaan (waktu kirim Google Form dikurangi waktu mulai di portal), kartu Rata-rata Waktu, dan kolom Waktu Mulai & Durasi di CSV. Waktu mulai dicatat server di Sheet Log_Sesi saat siswa lolos token.', gas: true },
       { v: 'v2.11', judul: 'Hitungan nonaktif & perbaikan tema malam', isi: 'Ruang Siswa menampilkan jumlah ujian nonaktif per kelas dan total. Tema malam diperbaiki: footer dan beberapa tombol/lencana yang tetap putih sehingga tulisannya tidak terbaca. Code.gs tidak berubah (tetap v2.8).', gas: false },
       { v: 'v2.10', judul: 'Perbaikan keamanan (hasil audit)', isi: 'getGrades kini mengambil sheet nilai dari data ujian di server dan memeriksa hak akses; laporan pelanggaran wajib membawa token ujian; pembatas token per nama dan per ujian (token baru mereset hitungan); nama siswa dibersihkan dari tanda < >; petunjuk nama kembar (tambahkan nomor absen).', gas: true },
@@ -4240,7 +4393,7 @@
     }
 
     function copyGasCode() {
-      copyTextToClipboard(GAS_BACKEND_CODE, 'Kode lengkap Code.gs v2.9 berhasil disalin ke clipboard!');
+      copyTextToClipboard(GAS_BACKEND_CODE, 'Kode lengkap Code.gs v2.11 berhasil disalin ke clipboard!');
     }
 
     function copyLivePortalLink() {
@@ -4342,13 +4495,15 @@
     }
 
     /* =========================================================================
-       14. KODE LENGKAP GOOGLE APPS SCRIPT (Code.gs v2.9) — KEAMANAN BERLAPIS
+       14. KODE LENGKAP GOOGLE APPS SCRIPT (Code.gs v2.10) — KEAMANAN BERLAPIS
        ========================================================================= */
     const GAS_BACKEND_CODE = `/**
  * ==============================================================================
- * PORTAL ASESMEN SEKOLAH — BACKEND GOOGLE APPS SCRIPT (Code.gs v2.9)
+ * PORTAL ASESMEN SEKOLAH — BACKEND GOOGLE APPS SCRIPT (Code.gs v2.11)
  * Dikembangkan oleh: SMPN 2 Gandusari
  * RIWAYAT VERSI:
+ *   v2.11 - Cek duplikat ID_Ujian saat tambah ujian, getViolations memakai cache daftar ujian, penanda sandi awal lebih jelas
+ *   v2.10 - Kapasitas: cache 60 detik untuk daftar ujian & kelas, pemeriksaan kolom sheet sekali per 6 jam
  *   v2.9 - Waktu pengerjaan: Sheet Log_Sesi mencatat waktu mulai siswa, aksi getSessions untuk Rekap Nilai
  *   v2.8 - Perbaikan keamanan: getGrades diperiksa di server, laporan pelanggaran wajib token, pembatas token per nama/ujian
  *   v2.7 - KKM per ujian (kolom KKM di Data_Ujian); skor Google Form x / y dikonversi ke skala 0-100
@@ -4373,7 +4528,7 @@ const SHEET_KELAS = 'Data_Kelas';
 const SHEET_LOG   = 'Log_Aktivitas';
 const SHEET_PELANGGARAN = 'Log_Pelanggaran';
 const SHEET_SESI = 'Log_Sesi'; // waktu siswa mulai ujian (untuk menghitung waktu pengerjaan)
-const CODE_VERSION = 'v2.9'; // nomor versi Code.gs (dicek oleh portal saat Tes API)
+const CODE_VERSION = 'v2.11'; // nomor versi Code.gs (dicek oleh portal saat Tes API)
 const MAX_STRIKES = 3; // batas pelanggaran sebelum siswa terkunci
 const MAX_TOKEN_FAILS = 3000; // batas token salah per ujian dalam 5 menit (menahan tebak-tebakan massal)
 const MAX_TOKEN_FAILS_PER_NAME = 15; // batas token salah per nama siswa dalam 5 menit
@@ -4411,11 +4566,11 @@ function setupMasterSheets() {
     shAkun.appendRow(['Username', 'Password', 'Nama_Pengguna', 'Role', 'Target_Kelas', 'Target_Mapel']);
     shAkun.getRange(1, 1, 1, 6).setFontWeight('bold').setBackground('#0d9488').setFontColor('#ffffff');
     shAkun.setFrozenRows(1);
-    // PENTING: Segera ganti password default di Google Sheets setelah setup!
-    shAkun.appendRow(['operator', 'GantiSandiOp#2026', 'Operator SMPN 2 Gandusari', 'Operator', 'Semua', 'Semua']);
-    shAkun.appendRow(['kepsek', 'GantiSandiKS#2026', 'Kepala SMPN 2 Gandusari', 'Kepsek', 'Semua', 'Semua']);
-    shAkun.appendRow(['guru7a', 'GantiSandi7A#2026', 'Wali Kelas 7A', 'Guru Kelas', 'Kelas 7A', 'Semua']);
-    shAkun.appendRow(['guruipa', 'GantiSandiIPA#2026', 'Guru Mapel IPA', 'Guru Mapel', 'Semua', 'IPA']);
+    // PENTING: Password awal di bawah WAJIB segera diganti di Sheet Akun_Guru setelah setupMasterSheets() dijalankan!
+    shAkun.appendRow(['operator', 'WAJIB_GANTI_SANDI_OP', 'Operator SMPN 2 Gandusari', 'Operator', 'Semua', 'Semua']);
+    shAkun.appendRow(['kepsek', 'WAJIB_GANTI_SANDI_KS', 'Kepala SMPN 2 Gandusari', 'Kepsek', 'Semua', 'Semua']);
+    shAkun.appendRow(['guru7a', 'WAJIB_GANTI_SANDI_7A', 'Wali Kelas 7A', 'Guru Kelas', 'Kelas 7A', 'Semua']);
+    shAkun.appendRow(['guruipa', 'WAJIB_GANTI_SANDI_IPA', 'Guru Mapel IPA', 'Guru Mapel', 'Semua', 'IPA']);
   }
 
   // 3. Setup Sheet Data_Kelas (Dinamis — Default SMP)
@@ -4473,20 +4628,26 @@ function doPost(e) {
     }
 
     if (action === 'getExams') {
-      ensureExamSheetColumns();
       // Siswa (tanpa login) TIDAK menerima Token, Link_Form, dan ID_Sheet_Nilai.
       // Link_Form baru diberikan server setelah token ujian terverifikasi (verifyExamToken).
       const viewer = verifySessionToken(auth && auth.token);
-      return jsonResponse({ success: true, data: sanitizeExamsForViewer(getSheetAsObjects(SHEET_UJIAN), viewer) });
+      return jsonResponse({ success: true, data: sanitizeExamsForViewer(getExamRows(), viewer) });
     }
 
     if (action === 'getClasses') {
-      const shK = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_KELAS);
-      if (!shK || shK.getLastRow() < 2) {
-        return jsonResponse({ success: true, data: ['Kelas 7A', 'Kelas 7B', 'Kelas 8A', 'Kelas 8B', 'Kelas 9A', 'Kelas 9B'] });
+      // Daftar kelas jarang berubah: disimpan di cache 60 detik (dihapus otomatis saat kelas ditambah/dihapus)
+      const cacheK = CacheService.getScriptCache();
+      const rawK = cacheK.get('classes_cache_v1');
+      if (rawK) {
+        try { return jsonResponse({ success: true, data: JSON.parse(rawK) }); } catch (e) { /* cache rusak: baca ulang */ }
       }
-      const list = shK.getRange(2, 1, shK.getLastRow() - 1, 1).getValues().map(r => String(r[0]).trim()).filter(Boolean);
-      return jsonResponse({ success: true, data: list });
+      const shK = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_KELAS);
+      let listK = ['Kelas 7A', 'Kelas 7B', 'Kelas 8A', 'Kelas 8B', 'Kelas 9A', 'Kelas 9B'];
+      if (shK && shK.getLastRow() >= 2) {
+        listK = shK.getRange(2, 1, shK.getLastRow() - 1, 1).getValues().map(r => String(r[0]).trim()).filter(Boolean);
+      }
+      try { cacheK.put('classes_cache_v1', JSON.stringify(listK), 60); } catch (e) { /* abaikan */ }
+      return jsonResponse({ success: true, data: listK });
     }
 
     // Aksi Publik Pelanggaran Exambro (dipanggil dari perangkat siswa, tanpa login)
@@ -4577,7 +4738,7 @@ function doPost(e) {
     if (action === 'getViolations') {
       const fullAccess = isFullAdminRole(currentUser.Role);
       const allowedExams = {};
-      getSheetAsObjects(SHEET_UJIAN).forEach(function (x) {
+      getExamRows().forEach(function (x) {
         if (canAccessExam(currentUser, x)) allowedExams[String(x.ID_Ujian)] = true;
       });
       const shV = getViolationSheet();
@@ -4611,10 +4772,16 @@ function doPost(e) {
 
     if (action === 'createExam') {
       enforceExamRBAC(currentUser, payload);
-      const tokenNew = prepareExamToken(payload.Token, payload.ID_Ujian);
       const sh = ensureExamSheetColumns();
+      const existingIds = {};
+      getSheetAsObjects(SHEET_UJIAN).forEach(function (x) { existingIds[String(x.ID_Ujian)] = true; });
+      let examIdNew = String(payload.ID_Ujian || '').trim();
+      if (!examIdNew || existingIds[examIdNew]) {
+        examIdNew = 'UJN-' + Utilities.getUuid().slice(0, 6).toUpperCase();
+      }
+      const tokenNew = prepareExamToken(payload.Token, examIdNew);
       sh.appendRow([
-        payload.ID_Ujian,
+        examIdNew,
         payload.Kategori,
         payload.Mapel,
         payload.Kelas,
@@ -4626,7 +4793,7 @@ function doPost(e) {
         cleanExamTitle(payload.Materi),
         cleanKkm(payload.KKM)
       ]);
-      writeAuditLog(currentUser.Username, 'TAMBAH_UJIAN', payload.ID_Ujian + ' (' + payload.Mapel + ' - ' + payload.Kelas + ')');
+      writeAuditLog(currentUser.Username, 'TAMBAH_UJIAN', examIdNew + ' (' + payload.Mapel + ' - ' + payload.Kelas + ')');
       return jsonResponse({ success: true, message: 'Ujian berhasil ditambahkan.' });
     }
 
@@ -4785,6 +4952,8 @@ function doPost(e) {
     return jsonResponse({ success: false, message: err.message });
   } finally {
     if (lock) {
+      // Aksi tulis selesai: buang cache ujian & kelas agar perubahan langsung terbaca semua siswa
+      try { clearExamCache(); clearClassCache(); } catch (_) {}
       try { lock.releaseLock(); } catch (_) {}
     }
   }
@@ -4866,20 +5035,28 @@ function ensureExamSheetColumns() {
     setupMasterSheets();
     sh = ss.getSheetByName(SHEET_UJIAN);
   }
-  if (sh.getLastRow() >= 1 && !String(sh.getRange(1, 8).getValue()).trim()) {
-    sh.getRange(1, 8).setValue('Durasi');
+  // Pemeriksaan kolom cukup sekali per 6 jam (hemat pembacaan sheet saat banyak siswa mengakses bersamaan)
+  const cache = CacheService.getScriptCache();
+  if (cache.get('exam_cols_ok')) return sh;
+  if (sh.getLastRow() >= 1) {
+    const head = sh.getRange(1, 1, 1, 11).getValues()[0];
+    const kosong = function (i) { return !String(head[i] === undefined || head[i] === null ? '' : head[i]).trim(); };
+    if (kosong(7)) {
+      sh.getRange(1, 8).setValue('Durasi');
+    }
+    if (kosong(8)) {
+      sh.getRange(1, 9).setValue('Token').setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
+      // Format teks agar token angka (mis. 012345) tidak diubah Sheets menjadi bilangan
+      sh.getRange(2, 9, Math.max(sh.getMaxRows() - 1, 1), 1).setNumberFormat('@');
+    }
+    if (kosong(9)) {
+      sh.getRange(1, 10).setValue('Materi').setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
+    }
+    if (kosong(10)) {
+      sh.getRange(1, 11).setValue('KKM').setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
+    }
   }
-  if (sh.getLastRow() >= 1 && !String(sh.getRange(1, 9).getValue()).trim()) {
-    sh.getRange(1, 9).setValue('Token').setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
-    // Format teks agar token angka (mis. 012345) tidak diubah Sheets menjadi bilangan
-    sh.getRange(2, 9, Math.max(sh.getMaxRows() - 1, 1), 1).setNumberFormat('@');
-  }
-  if (sh.getLastRow() >= 1 && !String(sh.getRange(1, 10).getValue()).trim()) {
-    sh.getRange(1, 10).setValue('Materi').setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
-  }
-  if (sh.getLastRow() >= 1 && !String(sh.getRange(1, 11).getValue()).trim()) {
-    sh.getRange(1, 11).setValue('KKM').setFontWeight('bold').setBackground('#0284c7').setFontColor('#ffffff');
-  }
+  cache.put('exam_cols_ok', '1', 21600);
   return sh;
 }
 
@@ -5151,8 +5328,33 @@ function makeStudentKey(nama, examId) {
   return String(examId).trim() + '|' + String(nama).toLowerCase();
 }
 
+/** Daftar ujian dengan cache 60 detik (dihapus otomatis tiap guru/operator menambah, mengubah, atau menghapus data).
+ *  Catatan: bila Sheet Data_Ujian diedit LANGSUNG di Google Sheets, perubahan baru terbaca maksimal 60 detik kemudian. */
+function getExamRows() {
+  const cache = CacheService.getScriptCache();
+  const raw = cache.get('exams_cache_v1');
+  if (raw) {
+    try { return JSON.parse(raw); } catch (e) { /* cache rusak: baca ulang */ }
+  }
+  ensureExamSheetColumns();
+  const rows = getSheetAsObjects(SHEET_UJIAN);
+  try {
+    const s = JSON.stringify(rows);
+    if (s.length < 90000) cache.put('exams_cache_v1', s, 60);
+  } catch (e) { /* terlalu besar: lewati cache */ }
+  return rows;
+}
+
+function clearExamCache() {
+  CacheService.getScriptCache().remove('exams_cache_v1');
+}
+
+function clearClassCache() {
+  CacheService.getScriptCache().remove('classes_cache_v1');
+}
+
 function findExamById(examId) {
-  return getSheetAsObjects(SHEET_UJIAN).find(function (x) { return String(x.ID_Ujian) === String(examId); }) || null;
+  return getExamRows().find(function (x) { return String(x.ID_Ujian) === String(examId); }) || null;
 }
 
 function canAccessExam(user, exam) {
